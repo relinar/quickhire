@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+  <meta charset="UTF-8">
+  <title>Quickhire - Avaleht</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+  <div class="top-box">
+    <div class="navbar">
+      <div class="nav-left">Quickhire</div>
+      <div class="nav-center">Avaleht</div>
+      <div class="nav-right menu-icon" id="menuBtn">&#9776;</div>
+    </div>
+  </div>
+
+  <div class="bottom-box">
+    <p>Tere tulemast Quickhire’i!</p>
+    <button>Alusta</button>
+  </div>
+
+  <div id="sidebar-container"></div>
+  <div class="overlay" id="overlay"></div>
+
+  <script>
+    fetch('/sidebar.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('sidebar-container').innerHTML = data;
+
+        const menuBtn = document.getElementById('menuBtn');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+        const backBtn = document.getElementById('backBtn');
+        const body = document.body;
+
+        function toggleMenu() {
+          sidebar.classList.toggle('open');
+          overlay.classList.toggle('active');
+          body.classList.toggle('menu-open');
+        }
+
+        menuBtn.addEventListener('click', toggleMenu);
+        overlay.addEventListener('click', toggleMenu);
+        backBtn.addEventListener('click', toggleMenu);
+      });
+  </script>
+
+</body>
+</html>

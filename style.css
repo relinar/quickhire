@@ -1,0 +1,356 @@
+/* === Your original styles === */
+
+body {
+  background-color: #485A6C;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  color: white;
+}
+
+/* Smaller top box */
+.top-box {
+  width: 100%;
+  height: 80px;
+  background-color: #2C3E50;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+/* Navbar shifted slightly downward */
+.navbar {
+  width: 90%;
+  max-width: 1200px;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  padding-top: 20px;
+  color: white;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+}
+
+.nav-left {
+  font-style: italic;
+  font-size: 20px;
+  margin-left: -200px;
+}
+
+.nav-left a {
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.nav-center {
+  font-style: italic;
+  font-size: 20px;
+  text-align: center;
+  flex: 1;
+}
+
+.nav-right {
+  font-size: 20px;
+  color: white;
+  cursor: pointer;
+  text-align: right;
+  margin-right: -200px;
+}
+
+.menu-icon {
+  font-size: 28px;
+  cursor: pointer;
+  padding-left: 10px;
+  position: relative;
+  z-index: 1100;
+}
+
+/* Content area */
+.content {
+  color: white;
+  padding: 40px 60px;
+  flex: 1;
+  text-align: left;
+  font-size: 20px;
+  line-height: 2;
+  padding-left: 120px;
+}
+
+.bottom-box {
+  width: 100%;
+  height: 80px;
+  background-color: #2C3E50;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 1000; /* kindlalt üleval muust sisust */
+}
+
+/* Quote text—moved closer */
+.faded-text {
+  opacity: 0.4;
+  font-style: italic;
+  margin-top: 10px; /* <— was 2% */
+}
+
+/* Optional buttons */
+.button-container {
+  display: flex;
+  gap: 10px;
+  margin: 20px;
+  margin-left: 80px;
+}
+
+.register-button,
+.login-button {
+  padding: 15px 30px; /* bigger buttons */
+  font-size: 36px; /* bigger font */
+  border-radius: 9px;
+  border: 2px solid black;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-bottom: 90px;
+  color: black;
+}
+
+.register-button {
+  background-color: #4a90e2;
+}
+
+.login-button {
+  background-color: #87bfff;
+}
+
+.register-button:hover,
+.login-button:hover {
+  opacity: 0.9;
+}
+
+/* === Sidebar styles === */
+
+.sidebar {
+  position: fixed;
+  top: 5vh;
+  left: 5vw;
+  width: 90vw;
+  height: 90vh;
+  background-color: white;
+  color: black;
+  padding: 20px;
+  box-sizing: border-box;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  z-index: 1000;
+  font-family: Arial, sans-serif;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.25);
+  visibility: hidden;
+  opacity: 0;
+  overflow-y: auto;
+}
+
+.sidebar.open {
+  visibility: visible;
+  opacity: 1;
+}
+
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0 40px 0;
+  font-size: 18px;
+  text-align: center;
+}
+
+.sidebar-menu li {
+  border-bottom: 1px solid #ccc;
+  padding: 12px 0;
+}
+
+.sidebar-menu li:last-child {
+  border-bottom: none;
+}
+
+.sidebar-menu li a {
+  text-decoration: none;
+  color: black;
+  display: block;
+}
+
+.sidebar-menu li a:hover {
+  background-color: #f0f0f0;
+}
+
+.sidebar-footer {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  font-size: 14px;
+  color: #555;
+  font-style: italic;
+  text-align: center;
+}
+
+/* Back button */
+.back-button {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: #2C3E50;
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.25s ease;
+}
+
+.back-button:hover {
+  background: #1b2836;
+}
+
+/* Overlay */
+.overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.3);
+  z-index: 900;
+  display: none;
+}
+
+.overlay.active {
+  display: block;
+}
+
+/* Welcome text */
+.welcome-text {
+  color: white;
+  font-size: 28px;
+  font-weight: bold;
+  margin-left: 80px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+#logout-button {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  font-size: 18px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 90px;
+}
+
+#logout-button:hover {
+  opacity: 0.9;
+}
+
+/* Modal Background */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed;
+  z-index: 2000;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.7);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: white;
+  color: black;
+  padding: 20px;
+  border-radius: 8px;
+  width: 320px;
+  max-width: 90vw;
+  font-family: Arial, sans-serif;
+  position: relative;
+}
+
+.modal-content h2 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.modal-content label {
+  display: block;
+  margin: 10px 0 4px;
+}
+
+.modal-content input, .modal-content select {
+  width: 100%;
+  padding: 7px;
+  box-sizing: border-box;
+  font-size: 16px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.modal-content button {
+  margin-top: 15px;
+  width: 100%;
+  padding: 10px;
+  font-size: 18px;
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.modal-content button:hover {
+  background-color: #357ABD;
+}
+
+.close-button {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+.close-button:hover {
+  color: #000;
+}
+
+@media (max-width: 600px) {
+  .top-box, .bottom-box, #sidebar {
+    padding: 10px;
+  }
+
+  .bottom-box h1 {
+    font-size: 20px;
+  }
+
+  .bottom-box p {
+    font-size: 14px;
+  }
+
+  button {
+    font-size: 16px;
+    padding: 12px;
+  }
+
+  .sidebar-menu li a {
+    font-size: 16px;
+  }
+}

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Quickhire</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <div class="top-box">
+    <div class="navbar">
+      <div class="nav-left"><a href="index.html" id="quickhire-link">Quickhire</a></div>
+      <div class="nav-center">Esmaspäevast reedeni 9.00–17.00</div>
+      <div class="nav-right menu-icon" id="menuBtn">&#9776;</div>
+    </div>
+  </div>
+
+  <div class="content">
+    <div>Quickhire – kandidaadid lisavad end Quickhiresse,</div>
+    <div>tööandjad swipivad neid ning vastused tulevad hetkega,</div>
+    <div>pakkudes tööandjatele tohutut kandidaatide valikut!</div>
+    <div class="faded-text">Vikenti Veressajev: „Kui poleks riski, poleks ka edu.“</div>
+
+    <div id="auth-section" class="button-container">
+      <button class="register-button" id="registerBtn">Registreeru</button>
+      <button class="login-button" id="loginBtn">Logi sisse</button>
+    </div>
+
+    <div id="welcome-section" class="welcome-text" style="display:none;">
+      Tere tulemast, <span id="username"></span>!
+      <button id="logout-button" style="background-color:#e74c3c; color:white; border:none; padding:8px 15px; font-size:18px; border-radius:5px; cursor:pointer;">Logi välja</button>
+    </div>
+  </div>
+
+  <div class="bottom-box"></div>
+
+  <!-- Registration Modal -->
+  <div id="register-modal" class="modal">
+    <div class="modal-content">
+      <span class="modal-close" id="register-close">&times;</span>
+      <h2>Registreeru</h2>
+      <form id="register-form">
+        <label for="reg-nimi">Nimi</label>
+        <input type="text" id="reg-nimi" required />
+
+        <label for="reg-vanus">Vanus</label>
+        <input type="number" id="reg-vanus" min="1" max="120" required />
+
+        <label for="reg-sugu">Sugu</label>
+        <select id="reg-sugu" required>
+          <option value="" disabled selected>Vali sugu</option>
+          <option value="Mees">Mees</option>
+          <option value="Naine">Naine</option>
+          <option value="Muu">Muu</option>
+        </select>
+
+        <label for="reg-email">Email</label>
+        <input type="email" id="reg-email" required />
+
+        <label for="reg-parool">Parool</label>
+        <input type="password" id="reg-parool" required />
+
+        <label for="reg-kasutaja-nimi">Kasutaja nimi</label>
+        <input type="text" id="reg-kasutaja-nimi" required />
+
+        <label for="reg-kasutaja-parool">Kasutaja parool</label>
+        <input type="password" id="reg-kasutaja-parool" required />
+
+        <button type="submit" style="background-color:#4a90e2; color:white;">Registreeru</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Login Modal -->
+  <div id="login-modal" class="modal">
+    <div class="modal-content">
+      <span class="modal-close" id="login-close">&times;</span>
+      <h2>Logi sisse</h2>
+      <form id="login-form">
+        <label for="login-kasutaja-nimi">Kasutaja nimi</label>
+        <input type="text" id="login-kasutaja-nimi" required />
+
+        <label for="login-kasutaja-parool">Kasutaja parool</label>
+        <input type="password" id="login-kasutaja-parool" required />
+
+        <button type="submit" style="background-color:#87bfff; color:black;">Logi sisse</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Sidebar and overlay container -->
+  <div id="sidebar-container"></div>
+  <div class="overlay" id="overlay"></div>
+
+  <script>
+    // Sidebar menu loading and toggle
+    fetch('/sidebar.html')
+      .then(response => response.text())
+      .then(html => {
+        document.getElementById('sidebar-container').innerHTML = html;
+
+        const menuBtn = document.getElementById('menuBtn');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+        const backBtn = document.getElementById('backBtn');
+        const body = document.body;
+
+        function toggleMenu() {
+          sidebar.classList.toggle('open');
+          overlay.classList.toggle('active');
+          body.classList.toggle('menu-open');
+        }
+
+        menuBtn.addEventListener('click', toggleMenu);
+        overlay.addEventListener('click', toggleMenu);
+        backBtn.addEventListener('click', toggleMenu);
+      });
+
+    // Registration and login modal logic
+    const registerModal = document.getElementById('register-modal');
+    const loginModal = document.getElementById('login-modal');
+
+    const registerBtn = document.getElementById('registerBtn');
+    const loginBtn = document.getElementById('loginBtn');
+
+    const registerClose = document.getElementById('register-close');
+    const loginClose = document.getElementById('login-close');
+
+    const authSection = document.getElementById('auth-section');
+    const welcomeSection = document.getElementById('welcome-section');
+    const usernameSpan = document.getElementById('username');
+    const logoutBtn = document.getElementById('logout-button');
+
+    registerBtn.addEventListener('click', () => {
+      registerModal.style.display = 'flex';
+    });
+
+    loginBtn.addEventListener('click', () => {
+      loginModal.style.display = 'flex';
+    });
+
+    registerClose.addEventListener('click', () => {
+      registerModal.style.display = 'none';
+      clearRegisterForm();
+    });
+
+    loginClose.addEventListener('click', () => {
+      loginModal.style.display = 'none';
+      clearLoginForm();
+    });
+
+    window.addEventListener('click', e => {
+      if (e.target === registerModal) {
+        registerModal.style.display = 'none';
+        clearRegisterForm();
+      }
+      if (e.target === loginModal) {
+        loginModal.style.display = 'none';
+        clearLoginForm();
+      }
+    });
+
+    function clearRegisterForm() {
+      document.getElementById('register-form').reset();
+    }
+    function clearLoginForm() {
+      document.getElementById('login-form').reset();
+    }
+
+    function loadUsers() {
+      const usersJSON = localStorage.getItem('users');
+      return usersJSON ? JSON.parse(usersJSON) : [];
+    }
+
+    function saveUsers(users) {
+      localStorage.setItem('users', JSON.stringify(users));
+    }
+
+    document.getElementById('register-form').addEventListener('submit', e => {
+      e.preventDefault();
+
+      const nimi = document.getElementById('reg-nimi').value.trim();
+      const vanus = document.getElementById('reg-vanus').value.trim();
+      const sugu = document.getElementById('reg-sugu').value;
+      const email = document.getElementById('reg-email').value.trim();
+      const parool = document.getElementById('reg-parool').value;
+      const kasutajaNimi = document.getElementById('reg-kasutaja-nimi').value.trim();
+      const kasutajaParool = document.getElementById('reg-kasutaja-parool').value;
+
+      if (!nimi || !vanus || !sugu || !email || !parool || !kasutajaNimi || !kasutajaParool) {
+        alert('Palun täida kõik väljad!');
+        return;
+      }
+
+      let users = loadUsers();
+
+      if (users.some(u => u.kasutajaNimi === kasutajaNimi)) {
+        alert('Selle kasutajanimega kasutaja on juba olemas!');
+        return;
+      }
+
+      const newUser = { nimi, vanus, sugu, email, parool, kasutajaNimi, kasutajaParool };
+
+      users.push(newUser);
+      saveUsers(users);
+
+      alert('Registreerimine õnnestus! Nüüd saad sisse logida.');
+
+      registerModal.style.display = 'none';
+      clearRegisterForm();
+    });
+
+    document.getElementById('login-form').addEventListener('submit', e => {
+      e.preventDefault();
+
+      const kasutajaNimi = document.getElementById('login-kasutaja-nimi').value.trim();
+      const kasutajaParool = document.getElementById('login-kasutaja-parool').value;
+
+      const users = loadUsers();
+
+      const user = users.find(u => u.kasutajaNimi === kasutajaNimi && u.kasutajaParool === kasutajaParool);
+
+      if (!user) {
+        alert('Vale kasutajanimi või parool!');
+        return;
+      }
+
+      localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('loggedUser', JSON.stringify(user));
+
+      loginModal.style.display = 'none';
+      clearLoginForm();
+
+      updateUI();
+    });
+
+    logoutBtn.addEventListener('click', () => {
+      localStorage.removeItem('isLoggedIn');
+      localStorage.removeItem('loggedUser');
+      updateUI();
+    });
+
+    function updateUI() {
+      const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+      if (isLoggedIn) {
+        const user = JSON.parse(localStorage.getItem('loggedUser'));
+        authSection.style.display = 'none';
+        welcomeSection.style.display = 'flex';
+        usernameSpan.textContent = user.nimi || user.kasutajaNimi;
+      } else {
+        authSection.style.display = 'flex';
+        welcomeSection.style.display = 'none';
+      }
+    }
+
+    updateUI();
+  </script>
+</body>
+</html>
